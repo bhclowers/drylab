@@ -1,0 +1,9 @@
+This work is licensed under the Creative Commons
+Attribution-NonCommercial-ShareAlike 3.0 United States License
+(CC BY-NC-SA 3.0 US). To view a copy of this license, visit
+http://creativecommons.org/licenses/by-nc-sa/3.0/us/
+
+Derived from:
+- hplc_simulator (JavaScript), Michael C. Libby, github.com/mlibby/hplc_simulator
+- HPLC Simulator, Paul Boswell, Peter Carr, Dwight Stoll (hplcsimulator.org),
+  originally from Peter Carr's Excel teaching tool (University of Minnesota).

@@ -1,0 +1,24 @@
+[project]
+name = "hplc-sim"
+# Version is DERIVED from drylab.__version__, not restated here. It was
+# restated until 2026-08-05 and drifted three minor versions behind while
+# the notebook and the WASM build both read the package attribute, so the
+# packaging metadata was the only wrong copy. One authority (charter §9).
+dynamic = ["version"]
+description = "Chromatography simulator: HPLC (isocratic and gradient), Craig countercurrent extraction, and capillary GC (isothermal and temperature-programmed), with a marimo notebook"
+requires-python = ">=3.10"
+license = { text = "CC-BY-NC-SA-3.0-US" }
+dependencies = ["numpy>=1.26", "plotly>=5.20"]
+
+[project.optional-dependencies]
+notebook = ["marimo>=0.20", "pandas>=2.0"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["drylab", "drylab.plotting"]
+
+[tool.setuptools.dynamic]
+version = { attr = "drylab.__version__" }

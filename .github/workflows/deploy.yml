@@ -1,0 +1,67 @@
+name: deploy
+
+# Publishes the self-contained WASM notebook to GitHub Pages. The whole app
+# runs in the browser via Pyodide — there is no server, no backend and no
+# secrets, which is why the shipped package is kept to numpy + plotly.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Pages needs these; `concurrency` stops two pushes racing to publish.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install marimo numpy plotly
+
+      - name: Rebuild the artifact from source
+        # Deploy from a FRESHLY built artifact rather than trusting the
+        # committed one, so the published app always matches the notebook
+        # in this commit. The validate workflow separately checks that the
+        # two agree.
+        run: python tools/build_wasm_notebook.py
+
+      - name: Export the WASM site
+        run: |
+          ARTIFACT=$(ls dist/drylab_wasm_nb_v*.py | sort -V | tail -1)
+          echo "Exporting $ARTIFACT"
+          python -m marimo export html-wasm "$ARTIFACT" -o site --mode run
+
+      - name: Verify the export produced a usable site
+        # marimo can exit 0 having written an incomplete tree; check for the
+        # entry point and the .nojekyll that stops Pages mangling _-prefixed
+        # asset directories.
+        run: |
+          test -f site/index.html || { echo "no index.html in site/"; exit 1; }
+          test -f site/.nojekyll || touch site/.nojekyll
+          echo "site/ is $(du -sh site | cut -f1)"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,30 @@
+name: validate
+
+# Public-repo check: the committed WASM artifact must be exactly what the
+# notebook builds, so a stale dist/ cannot ship a wrong app.
+#
+# The seven oracle validation suites (~52,000 reference values against
+# GasChromatographySimulator.jl, a Java applet, a JavaScript reference,
+# Analytical Chemistry 2.0, SPYCE, and exact closed forms) are maintained
+# and run in the private development tree before every release; they and
+# their vendored reference materials are deliberately not part of this
+# repository.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  artifact-is-current:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rebuild the artifact and demand a clean tree
+        run: |
+          python tools/build_wasm_notebook.py
+          git diff --exit-code -- dist/ || {
+            echo "dist/ is stale: run tools/build_wasm_notebook.py and commit";
+            exit 1; }

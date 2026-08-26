@@ -1,0 +1,22 @@
+# Normalise line endings so the notebook and the generated WASM artifact do
+# not churn between platforms.
+* text=auto eol=lf
+*.png binary
+
+# The oracle goldens are single-line minified JSON of ~550 KB. A textual
+# diff of one 550 KB line is unreadable and slows every log/blame, and they
+# are never edited by hand — only regenerated wholesale by
+# validation/dump_golden_gc.jl. Suppress the diff and keep them out of
+# language statistics.
+validation/golden_gc*.json -diff linguist-generated=true
+
+# dist/ is a build artifact: regenerate with tools/build_wasm_notebook.py,
+# never edit. It is tracked because it is the deployable, but it should not
+# be reviewed as source or counted in language statistics.
+dist/** -diff linguist-generated=true
+
+# Vendored upstream applet source, kept for provenance and as the reference
+# the Java harness was lifted from. Preserved BYTE-FOR-BYTE (CRLF included):
+# normalising line endings would silently alter third-party code and break a
+# byte comparison against the original distribution.
+validation/reference_java/** -text
