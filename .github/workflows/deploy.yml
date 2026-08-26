@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install marimo numpy plotly
+      - run: pip install marimo numpy plotly uv
 
       - name: Rebuild the artifact from source
         # Deploy from a FRESHLY built artifact rather than trusting the
