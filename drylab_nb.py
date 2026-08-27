@@ -2889,6 +2889,27 @@ def _(
     mo,
     theme_style,
 ):
+    # ?tab=<key> opens the app on a chosen section, so an instructor can
+    # hand out a link that lands directly on, e.g., the Craig apparatus
+    # (?tab=craig). Same contract as the preset params: unknown or absent
+    # keys fall back to the default (HPLC), so a stale link can only ever
+    # be as wrong as the ordinary start state. Composable with the preset
+    # params (?tab=hplc&hplc=ex3).
+    _TAB_KEYS = {
+        "hplc": "HPLC",
+        "gc": "GC",
+        "ce": "CE",
+        "band": "Band shape",
+        "craig": "Craig apparatus",
+        "config": "Config",
+        "diagnostics": "Diagnostics",
+    }
+    try:
+        _raw = mo.query_params().get("tab")
+    except Exception:
+        _raw = None
+    _initial_tab = _TAB_KEYS.get(str(_raw).lower() if _raw else "", "HPLC")
+
     _top_tabs = mo.ui.tabs(
         {
             "HPLC": hplc_section,
@@ -2898,7 +2919,8 @@ def _(
             "Craig apparatus": craig_section,
             "Config": config_panel,
             "Diagnostics": diagnostics_panel,
-        }
+        },
+        value=_initial_tab,
     )
 
     mo.vstack([theme_style, _top_tabs], gap=0.5)

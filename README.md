@@ -42,7 +42,10 @@ separate linearly in transfer count while widths grow only as its square
 root.
 
 **Built for the classroom.** Sidebar preset menus (also selectable by URL,
-e.g. `?hplc=ex3&gc=ex5b`) drop every student into an identical scenario;
+e.g. `?hplc=ex3&gc=ex5b`) drop every student into an identical scenario,
+and `?tab=` opens the app on a chosen section (`hplc`, `gc`, `ce`,
+`band`, `craig` — e.g. `?tab=craig` lands directly on the Craig
+apparatus; parameters combine: `?tab=hplc&hplc=ex3`);
 every CSV export is stamped with the operating point that produced it, so
 homework arrives traceable. A POGIL-style exercise set and instructor key
 are developed alongside the simulator.
