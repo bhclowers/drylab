@@ -109,6 +109,24 @@ the internal collaboration files can never drift into the public repo by
 accident. The deploy workflow republishes on push; nothing else is
 needed.
 
+**If your clone has its own commits** (e.g. workflow fixes made directly
+in `~/Documents/Github/drylab`), don't swap in a downloaded publish repo —
+its history and yours have diverged and the push would be rejected.
+Sync the *content* into your clone instead, keeping your history:
+
+```bash
+unzip -o drylab_publish_v<version>.zip -d /tmp/drylab_new
+rsync -a --delete --exclude .git /tmp/drylab_new/drylab/ \
+      ~/Documents/Github/drylab/
+cd ~/Documents/Github/drylab
+git add -A
+git commit -m "drylab v<version> — release"
+git push
+```
+
+`--delete` removes files the release removed (e.g. the previous `dist/`
+artifact); `--exclude .git` is what preserves your clone's history.
+
 ## 6. If something goes wrong
 
 - *Push rejected (fetch first):* the GitHub repo was initialized with a

@@ -75,6 +75,7 @@ worth knowing about.
 The export is plain static files, so any host works:
 
 ```bash
+pip install uv          # newer marimo requires it for html-wasm export
 python -m marimo export html-wasm dist/drylab_wasm_nb_v<latest>.py \
     -o site --mode run
 python -m http.server --directory site      # local preview

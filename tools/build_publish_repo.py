@@ -79,8 +79,8 @@ jobs:
   artifact-is-current:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Rebuild the artifact and demand a clean tree
@@ -93,13 +93,26 @@ jobs:
 
 
 def patch_readme(text: str) -> str:
-    """Point README's validation section at the development tree."""
+    """Point README's validation bullet at the development tree.
+
+    Consumes the ENTIRE bullet — the marker line plus every continuation
+    line (indented, or a nested list item) up to the next top-level line —
+    because the bullet is multi-line prose and replacing only its first
+    line orphans the rest mid-sentence (caught 2026-08-26 when the README
+    was rewritten with a wrapped bullet).
+    """
     marker = "- `validation/`"
     i = text.find(marker)
     if i < 0:
         return text
-    # Replace just that bullet's first line; the surrounding structure stays.
     j = text.find("\n", i)
+    while j >= 0:
+        k = text.find("\n", j + 1)
+        line = text[j + 1: k if k >= 0 else len(text)]
+        if line.startswith("  "):        # continuation line of the bullet
+            j = k
+            continue
+        break                            # blank line or next top-level item
     replacement = (
         "- validation: seven oracle suites (~52,000 reference values against"
         " Julia, Java,\n  JavaScript, Analytical Chemistry 2.0, SPYCE and"

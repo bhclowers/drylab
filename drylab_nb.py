@@ -28,7 +28,11 @@ produces a self-contained variant.
 import marimo
 
 __generated_with = "0.23.16"
-app = marimo.App(width="medium", app_title="drylab")
+# width="full": the content column stretches to the window. This is
+# the marimo-level stretch policy (App width, not per-widget CSS);
+# "medium" pinned the app to a ~1100 px column regardless of screen
+# (Brian, 2026-08-26).
+app = marimo.App(width="full", app_title="drylab")
 
 
 @app.cell
@@ -368,8 +372,11 @@ def _(
 def _(mo):
     # Craig apparatus: deliberately standalone - no shared settings, no link
     # to the chromatography model.
+    # Ceiling 100 -> 250 (Brian, 2026-08-26). Cost is nil — the tube
+    # distribution is a closed-form array — and 250 tubes keeps high-D
+    # bands on-axis at the transfer slider's 200-step maximum.
     craig_tubes = mo.ui.slider(
-        4, 100, value=20, step=1, label="Number of tubes"
+        4, 250, value=20, step=1, label="Number of tubes"
     )
     # Transfers are NOT capped by the tube count: past the last tube the
     # binomial tail leaves the apparatus, reported as eluted fraction.
@@ -2960,6 +2967,45 @@ def _(mo):
 
                 *Derived from the HPLC Simulator by Paul Boswell, Peter Carr,
                 and Dwight Stoll. License: CC BY-NC-SA 3.0 US.*
+
+                ---
+
+                **The capillary-electrophoresis engine**
+
+                The CE section is a restructured derivative of **SPYCE 2.0**
+                by Prateek Gupta and Supreet Singh Bahga (IIT Delhi), used
+                with the authors' written permission on the condition that
+                it remains freely available to the community (recorded in
+                full in the repository's `NOTICE.md`). Cite these when
+                publishing work that uses the CE model — the numerical
+                method is theirs:
+
+                6. Gupta, P.; Bahga, S. S. **Electrophoresis** 2021, *42*,
+                   890-898.
+                   [doi:10.1002/elps.202000259](https://doi.org/10.1002/elps.202000259)
+                7. Bahga, S. S.; Gupta, P. *Electrophoresis simulations
+                   using Chebyshev pseudo-spectral method on a moving
+                   mesh.* **Electrophoresis** 2021, *42*, 2321-2328.
+                   [doi:10.1002/elps.202100279](https://doi.org/10.1002/elps.202100279)
+
+                The electroosmotic-flow model, Joule-heating estimates, ion
+                library and all interface code are drylab's own; SPYCE
+                remains the validation oracle for the transport core.
+
+                **The GC model**
+
+                8. Ported from
+                   [GasChromatographySimulator.jl](https://github.com/JanLeppert/GasChromatographySimulator.jl)
+                   (Jan Leppert, MIT licence; *J. Open Source Softw.* 5(55),
+                   2391), which also serves as the validation oracle.
+                   Retention parameters: Blumberg's K-centric thermodynamic
+                   model (2017), as distributed with that package.
+
+                **The Craig apparatus**
+
+                9. Harvey, D. *Analytical Chemistry 2.0*, Appendix 16
+                   (Countercurrent Separations) — the closed forms and the
+                   worked examples the model is validated against.
                 """
             )
         }

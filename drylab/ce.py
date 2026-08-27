@@ -28,6 +28,23 @@ Scope: CZE only (ruled 2026-08-05, "CZE first, then ITP/FASS"). The moving
 mesh is deliberately NOT ported — it exists to resolve the sharp
 self-sharpening fronts of ITP, whereas CZE zones on a near-uniform arcsine
 grid are smooth. Adding it is the ITP work, not this.
+
+REFERENCES
+----------
+Cite these when publishing work that uses this module (they are the
+method; drylab is the restructuring):
+
+- Gupta, P.; Bahga, S. S. *Electrophoresis* **2021**, *42*, 890-898.
+  https://doi.org/10.1002/elps.202000259
+- Bahga, S. S.; Gupta, P. Electrophoresis simulations using Chebyshev
+  pseudo-spectral method on a moving mesh. *Electrophoresis* **2021**,
+  *42*, 2321-2328. https://doi.org/10.1002/elps.202100279
+
+Recorded exactly as in NOTICE.md (the first paper's title is not recorded
+there and doi.org is unreachable from the build sandbox, so it is cited
+by DOI rather than a possibly-misremembered title). No public repository
+for SPYCE could be located (checked 2026-08-26): the papers and
+NOTICE.md's recorded permission are the complete provenance trail.
 """
 from __future__ import annotations
 

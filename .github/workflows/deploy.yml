@@ -23,11 +23,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
+      # uv: required by newer marimo releases for html-wasm export of a
+      # notebook with inlined dependencies ("uv must be installed to
+      # resolve local imports", observed on the runner 2026-08-26; older
+      # marimo exports without it, so this is additive either way).
       - run: pip install marimo numpy plotly uv
 
       - name: Rebuild the artifact from source
@@ -52,7 +56,7 @@ jobs:
           test -f site/.nojekyll || touch site/.nojekyll
           echo "site/ is $(du -sh site | cut -f1)"
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
@@ -64,4 +68,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
