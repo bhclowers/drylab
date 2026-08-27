@@ -2878,34 +2878,6 @@ def _(gc_compare_panel, gc_controls, gc_golay_panel, gc_panel, gc_prog_panel,
 
 
 @app.cell
-def _(mo):
-    # ?tab=<key> opens the app on a chosen section (?tab=craig lands on
-    # the Craig apparatus). Unknown or absent keys fall back to HPLC —
-    # same contract as the preset params — and parameters compose
-    # (?tab=hplc&hplc=ex3). The param seeds this STATE exactly once; the
-    # tabs element reads and writes it (see the controlled-tab comment in
-    # the layout cell), which is what lets the deep link coexist with
-    # free navigation.
-    _TAB_KEYS = {
-        "hplc": "HPLC",
-        "gc": "GC",
-        "ce": "CE",
-        "band": "Band shape",
-        "craig": "Craig apparatus",
-        "config": "Config",
-        "diagnostics": "Diagnostics",
-    }
-    try:
-        _raw = mo.query_params().get("tab")
-    except Exception:
-        _raw = None
-    get_active_tab, set_active_tab = mo.state(
-        _TAB_KEYS.get(str(_raw).lower() if _raw else "", "HPLC")
-    )
-    return get_active_tab, set_active_tab
-
-
-@app.cell
 def _(
     bandshape_section,
     ce_section,
@@ -2913,10 +2885,8 @@ def _(
     craig_section,
     diagnostics_panel,
     gc_section,
-    get_active_tab,
     hplc_section,
     mo,
-    set_active_tab,
     theme_style,
 ):
     _top_tabs = mo.ui.tabs(
@@ -2928,18 +2898,14 @@ def _(
             "Craig apparatus": craig_section,
             "Config": config_panel,
             "Diagnostics": diagnostics_panel,
-        },
-        # CONTROLLED tab selection (hotfix 2026-08-26). This cell re-runs
-        # whenever ANY section panel rebuilds — i.e. on every control
-        # change anywhere — and a bare value=<initial> here re-asserted
-        # the landing tab on each rebuild, bouncing the user back (the
-        # v0.24.4 regression). value must therefore come from state that
-        # tracks the USER'S navigation: the query param seeds it once,
-        # on_change writes every click back, and rebuilds re-assert the
-        # current tab, not the initial one.
-        value=get_active_tab(),
-        on_change=set_active_tab,
+        }
     )
+    # NOTE (2026-08-26): do not pass value= or on_change here. Selection
+    # must stay element-managed: this cell re-runs on every control change
+    # anywhere (any panel rebuild), and both the explicit-value (v0.24.4)
+    # and mo.state-controlled (v0.24.5) variants re-asserted a tab on
+    # rebuild in the deployed WASM app, bouncing the user. A ?tab= deep
+    # link is PARKED until that mechanism is understood (issues.md).
 
     mo.vstack([theme_style, _top_tabs], gap=0.5)
     return
