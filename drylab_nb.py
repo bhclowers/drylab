@@ -146,13 +146,14 @@ def _():
 @app.cell
 def _():
     import io
+    import math
     from dataclasses import replace
 
     import marimo as mo
     import numpy as np
     import pandas as pd
 
-    return io, mo, np, pd, replace
+    return io, math, mo, np, pd, replace
 
 
 @app.cell
@@ -1142,8 +1143,6 @@ def _(
 
         _maths = mo.md(
             r"""
-    ### The equations
-
     **Partitioning in one tube (A16.1).** With an analyte distributed between an
     upper (mobile) and lower (stationary) phase, the fraction left in the lower
     phase is
@@ -1206,7 +1205,7 @@ def _(
                 craig_legend,
                 _plot,
                 mo.ui.table(_table, selection=None, show_download=False),
-                _maths,
+                mo.accordion({"The equations": _maths}),
             ],
             gap=0.75,
         )
@@ -1662,8 +1661,6 @@ def _(
 
         _maths = mo.md(
             r"""
-    ### The equations
-
     **Retention** follows the K-centric thermodynamic model
     (parameters $T_{char}, \theta_{char}, \Delta C_p$ fitted per compound and
     phase by Blumberg, 2017):
@@ -1731,7 +1728,7 @@ def _(
                 mo.ui.table(_table, selection=None, show_download=False),
                 gc_export_panel(gc_peaks, gc_column, gc_conditions, _tm,
                                 "isothermal"),
-                _maths,
+                mo.accordion({"The equations": _maths}),
             ],
             gap=0.75,
         )
@@ -2316,6 +2313,11 @@ def _(mo):
                          label="Cs — stationary-phase MT (ms)")
     bs_cm = mo.ui.slider(0.0, 10.0, value=1.0, step=0.25,
                          label="Cm — mobile-phase MT (ms)")
+    # Log velocity axis (v0.24.7). Default ON: the fixed 0.02-1.0 cm/s
+    # window puts typical optima in the left few percent of a linear axis;
+    # log is also the conventional presentation (Knox plots). The plot
+    # class guards against non-positive velocities before honouring it.
+    bs_logx = mo.ui.checkbox(value=True, label="Log velocity axis")
     # Peak-shape tab — the overload machine:
     # Ceiling raised 200 -> 1000 (Brian, 2026-08-18). Cost at the max is
     # ~0.8 s natively (N=1000, k=9, ~12k transfers), so a few seconds in
@@ -2343,6 +2345,7 @@ def _(mo):
         bs_k,
         bs_lambda,
         bs_load,
+        bs_logx,
         bs_plates,
         bs_tau,
     )
@@ -2393,11 +2396,13 @@ def _(
     bs_k,
     bs_lambda,
     bs_load,
+    bs_logx,
     bs_notice,
     bs_plates,
     bs_result,
     bs_tau,
     io,
+    math,
     mo,
     pd,
     plot_config,
@@ -2411,6 +2416,7 @@ def _(
         obstruction_gamma=0.6,
         c_s_ms=float(bs_cs.value),
         c_m_ms=float(bs_cm.value),
+        log_x=bool(bs_logx.value),
         config=replace(plot_config, show_legend=True,
                        show_operating_point=True),
         title=None,
@@ -2437,9 +2443,56 @@ def _(
         ),
         mo.hstack([bs_dp, bs_lambda], gap=1),
         mo.hstack([bs_dm, bs_cs, bs_cm], gap=1),
+        bs_logx,
         mo.ui.plotly(_vd.figure()),
         mo.download(data=_vd_csv, filename="van_deemter_terms.csv",
                     label="Term curves (CSV)"),
+        # Equations accordion (v0.24.7, Brian's ruling): definitions and
+        # closed forms ONLY — no consequence statements (which slider moves
+        # what, what is absent from what). The consequences are classroom
+        # inquiry; stating them here would answer the worksheet.
+        mo.accordion({
+            "The equations": mo.md(
+                r"""
+    **The builder's decomposition** (van Deemter, 1956):
+
+    $$H = A + \frac{B}{u} + (C_s + C_m)\,u$$
+
+    $$A = 2\lambda d_p \qquad B = 2\gamma D_m \qquad C = C_s + C_m$$
+
+    with \(\lambda\) the packing factor, \(d_p\) the particle diameter,
+    \(\gamma = 0.6\) the obstruction factor (hindrance of diffusion by
+    the packed bed), and \(D_m\) the solute's diffusion coefficient in
+    the mobile phase.
+
+    **Units, exactly as the controls supply them.** \(d_p\) in µm;
+    \(\lambda\) dimensionless; \(D_m\) in units of
+    \(10^{-5}\ \mathrm{cm^2/s}\); \(C_s\) and \(C_m\) in ms
+    (convert to seconds before combining). \(H\) is plotted in µm
+    against \(u\) in cm/s.
+
+    **The marked optimum.** For \(C > 0\),
+
+    $$u_{opt} = \sqrt{\frac{B}{C}} \qquad H_{min} = A + 2\sqrt{BC}$$
+
+    With \(C = 0\) no optimum exists and the stamp says so.
+
+    **What the C sliders stand for.** The coefficients are entered
+    directly here, one slider per whole term. Physically
+    \(C_s \sim d_f^{\,2}/D_s\) (stationary-film thickness and
+    diffusion in the film) and \(C_m \sim d_p^{\,2}/D_m\); those
+    internal variables are deliberately not modeled by this builder.
+
+    **A note on the eddy term.** This builder draws van Deemter's
+    original flat \(A = 2\lambda d_p\). The literature is not
+    settled: Wenzel's text writes the eddy contribution as
+    \(A\,v^{1/3}\), and some authors omit an A term entirely.
+
+    *Sources: van Deemter, Zuiderweg, Klinkenberg, Chem. Eng. Sci.
+    **1956**, 5, 271-289; T. Wenzel, Separation Science unit,
+    "Broadening of Chromatographic Peaks".*
+            """)
+        }),
     ], gap=0.75)
 
     # ---- Peak-shape tab ----
@@ -2480,7 +2533,9 @@ def _(
                 f"{_r.n_plates * (1 + _r.k_linear):.0f}",
                 f"{_r.t_mean:.1f}",
                 f"{_r.sigma:.2f}",
-                f"{_r.n_apparent:.0f}",
+                ("n/a (sigma = 0, unretained)"
+                 if not math.isfinite(_r.n_apparent)
+                 else f"{_r.n_apparent:.0f}"),
                 f"{_r.n_plates}",
                 "n/a" if _r.asymmetry is None else f"{_r.asymmetry:.2f}",
                 "n/a" if _ideal_as is None else f"{_ideal_as:.2f}",
@@ -2511,6 +2566,39 @@ def _(
             mo.ui.table(_readout, selection=None, show_download=False),
             mo.download(data=_shape_csv, filename="band_shape_profile.csv",
                         label="Profile (CSV)"),
+            # Equations accordion (v0.24.7): definitions and closed forms
+            # only — see the Mechanisms accordion note.
+            mo.accordion({
+                "The equations": mo.md(
+                    r"""
+    **The isotherm.** Each plate equilibrates by
+    \(q = \dfrac{aC}{1 + bC}\); the dimensionless curvature at the
+    injected concentration is \(\chi = b C_0 \times \mathrm{load}\)
+    (clamped at \(\chi > -0.9\), and you are told when the clamp
+    engages).
+
+    **The linear limit** (\(\chi = 0\), unit injection) is exact: the
+    exit profile is the negative-binomial elution profile with
+
+    $$\mu = N(1+k) \qquad \sigma^2 = N k (1+k)$$
+
+    in transfer units (one transfer = one plate volume).
+
+    **The readout's derived quantities.**
+
+    $$N_{app} = \frac{\mu^2}{\sigma^2} = N\,\frac{1+k}{k}
+    \qquad\text{(undefined at } k = 0\text{: } \sigma = 0\text{)}$$
+
+    Asymmetry \(A_s\) is the 10%-height ratio \(b/a\) of the rear to
+    front half-widths, reported for the simulated profile and for the
+    ideal linear profile at the same \(N\) and \(k\). The \(\tau\)
+    slider convolves the exit profile with a normalized exponential
+    decay (slow-desorption tailing), kept separate from overload.
+
+    *The linear limit is validated against the closed form in*
+    `validation/compare_bandshape.py`.
+                """)
+            }),
         ], gap=0.75)
 
     bandshape_section = mo.vstack([

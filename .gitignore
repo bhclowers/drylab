@@ -39,8 +39,3 @@ site/
 .idea/
 .vscode/
 *.swp
-
-# --- not part of the public repository ----------------------------------
-# The oracle validation suites live in the private development tree; if a
-# copy is placed here for local runs it must stay untracked.
-validation/

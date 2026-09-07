@@ -1,30 +1,75 @@
 name: validate
 
-# Public-repo check: the committed WASM artifact must be exactly what the
-# notebook builds, so a stale dist/ cannot ship a wrong app.
-#
-# The seven oracle validation suites (~52,000 reference values against
-# GasChromatographySimulator.jl, a Java applet, a JavaScript reference,
-# Analytical Chemistry 2.0, SPYCE, and exact closed forms) are maintained
-# and run in the private development tree before every release; they and
-# their vendored reference materials are deliberately not part of this
-# repository.
+# The oracle suites are the project's contract. These are the three that need
+# NO external runtime, because their goldens are committed:
+#   compare_gc.py           13,770 values vs GasChromatographySimulator.jl
+#   compare_gc_program.py   11,520 values, temperature-programmed GC
+#   compare_craig.py           530 values vs Analytical Chemistry 2.0
+#   compare_bandshape.py       plate cascade vs exact negative-binomial oracle
+# The Java and JavaScript suites are deliberately NOT run here: they need a
+# JDK and Node to regenerate their dumps, which are gitignored. Running them
+# in CI would mean either committing generated files or pretending a skipped
+# check passed.
 
 on:
   push:
+    branches: [main]
   pull_request:
+  workflow_dispatch:
 
 jobs:
-  artifact-is-current:
+  oracles:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - name: Rebuild the artifact and demand a clean tree
+
+      - name: Install runtime dependencies
+        # Only what the shipped package needs. scipy is NOT installed: the
+        # integrator cross-check is a developer tool, and keeping scipy out
+        # of CI is a standing guard that it never becomes a real dependency.
+        run: pip install numpy plotly
+
+      - name: GC isothermal vs the Julia oracle
+        run: python compare_gc.py
+        working-directory: validation
+
+      - name: GC temperature-programmed vs the Julia oracle
+        run: python compare_gc_program.py
+        working-directory: validation
+
+      - name: Craig countercurrent extraction
+        run: python compare_craig.py
+        working-directory: validation
+
+      - name: Band-shape cascade vs its exact linear closed form
+        run: python compare_bandshape.py
+        working-directory: validation
+
+      - name: Oracle convergence study
+        run: python oracle_convergence_gc.py
+        working-directory: validation
+
+  artifact-is-current:
+    # The deployable in dist/ is generated. If it does not rebuild
+    # byte-for-byte, the notebook and the artifact have drifted and the
+    # deployed app would not match the source.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install numpy plotly
+      - name: Rebuild the WASM notebook
+        run: python tools/build_wasm_notebook.py
+      - name: Fail if the committed artifact is stale
         run: |
-          python tools/build_wasm_notebook.py
-          git diff --exit-code -- dist/ || {
-            echo "dist/ is stale: run tools/build_wasm_notebook.py and commit";
-            exit 1; }
+          if [ -n "$(git status --porcelain dist/)" ]; then
+            echo "dist/ is out of date. Run tools/build_wasm_notebook.py and commit."
+            git --no-pager diff --stat dist/
+            exit 1
+          fi
+          echo "dist/ reproduces byte-for-byte."

@@ -85,10 +85,10 @@ form, and the suites run before every release:
 - **Band shape**: the plate cascade reproduces its exact negative-binomial
   closed form to ~1e-14, plus physical invariants for the nonlinear
   regime.
-- validation: seven oracle suites (~52,000 reference values against Julia, Java,
-  JavaScript, Analytical Chemistry 2.0, SPYCE and exact closed forms) are
-  maintained in the private development tree and pass before every release;
-  they are not part of this repository.
+- `validation/` — the oracle suites and vendored reference materials live
+  in the private development tree and pass before every release. (In the
+  development tree, `validation/` holds seven chartered suites; the
+  Java and JS dumps regenerate on demand and are gitignored there.)
 
 ## References
 

@@ -46,6 +46,7 @@ class VanDeemterBuilderPlot(BasePlot):
         c_m_ms: float,
         u_range: tuple[float, float] = (0.02, 1.0),
         n_points: int = 300,
+        log_x: bool = False,
         config: PlotConfig | None = None,
         title: str | None = None,
     ):
@@ -59,6 +60,13 @@ class VanDeemterBuilderPlot(BasePlot):
             c_m_ms=float(c_m_ms),
         )
         u = np.linspace(u_range[0], u_range[1], n_points)
+        # A log axis is only meaningful over strictly positive velocities.
+        # van_deemter_components already rejects u <= 0, but guard here too
+        # so a future caller with a widened range degrades to linear instead
+        # of producing a broken log axis (Brian's ruling, 2026-08-27: the
+        # student must never be able to put 0 or a negative on the log
+        # scale).
+        self.log_x = bool(log_x) and u[0] > 0.0
         self.terms: VanDeemterTerms = van_deemter_components(u, **self.params)
 
     def _operating_point(self) -> str:
@@ -76,6 +84,8 @@ class VanDeemterBuilderPlot(BasePlot):
     def _build(self, fig: go.Figure) -> None:
         t = self.terms
         u = t.u
+        if self.log_x:
+            fig.update_xaxes(type="log")
         fig.add_trace(go.Scatter(
             x=u, y=np.full_like(u, t.a_term), mode="lines", name="A (eddy)",
             line=dict(dash="dot")))
