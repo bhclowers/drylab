@@ -699,3 +699,15 @@ prints "n/a (sigma = 0, unretained)".
 Craig, GC, and (as of v0.24.7) both Band shape tabs carry "The equations"
 accordions; HPLC and CE do not. Same house pattern applies when taken up
 (statics-only content rule, decisions.md 2026-08-27).
+
+## OPEN — CE time slice 0 shows the hydronium starting guess, not equilibrium (2026-11-09)
+Found while measuring Exercise 8. `simulate_cze` sets `c_h = np.full(n, 1e-4)`,
+solves the equilibrium into `_c_h0`, but seeds `saved_h = [c_h.copy()]` with the
+GUESS. Slice 0's pH (7.00) and conductivity (0.113 S/m in the default Tris BGE)
+are therefore wrong; the true values (4.93, 0.0836 S/m) appear from slice 1
+(t ~ 0.03 s) on. The march itself starts from the solved state and is unaffected,
+and j_applied is computed from `_c_h0`, so all times, widths and currents are right.
+Proposed fix (one line, not applied — model-touching, needs Brian's GO and a
+version bump): `saved_h = [_c_h0.copy()]` (and seed `c_h = _c_h0` as the warm
+start). Exercise 8 sends students to slice 1 until this ships; drop that note
+from the worksheet once fixed.

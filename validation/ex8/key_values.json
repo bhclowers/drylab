@@ -1,0 +1,541 @@
+{
+ "drylab_version": "0.24.7",
+ "grid_points": 257,
+ "operating_point": "L 30 mm, 500 V unless stated, plug 1/e half-width 0.8 mm centered at 0.2 L (6 mm), EOF 0, save_every 3",
+ "A_start_500V_det15": {
+  "wall_s": 6.7,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.046,
+  "dT_K": 0.006,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.0389,
+  "potassium K+": {
+   "t_mig_s": 7.22,
+   "mu_app": 75.2,
+   "fwhm_s": 1.13,
+   "height_mM": 0.093,
+   "N_5.54": 227,
+   "As10_rear_over_front": 0.82,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 10.52,
+   "mu_app": 51.6,
+   "fwhm_s": 1.59,
+   "height_mM": 0.095,
+   "N_5.54": 242,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  },
+  "lithium Li+": {
+   "t_mig_s": 13.59,
+   "mu_app": 39.9,
+   "fwhm_s": 2.02,
+   "height_mM": 0.096,
+   "N_5.54": 251,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "A_1000V": {
+  "wall_s": 8.3,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.182,
+  "dT_K": 0.024,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.0194,
+  "potassium K+": {
+   "t_mig_s": 3.61,
+   "mu_app": 75.2,
+   "fwhm_s": 0.54,
+   "height_mM": 0.094,
+   "N_5.54": 244,
+   "As10_rear_over_front": 0.82,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 5.26,
+   "mu_app": 51.6,
+   "fwhm_s": 0.78,
+   "height_mM": 0.097,
+   "N_5.54": 254,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  },
+  "lithium Li+": {
+   "t_mig_s": 6.8,
+   "mu_app": 39.9,
+   "fwhm_s": 0.99,
+   "height_mM": 0.099,
+   "N_5.54": 261,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "A_1500V": {
+  "wall_s": 7.9,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.411,
+  "dT_K": 0.054,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.013,
+  "potassium K+": {
+   "t_mig_s": 2.41,
+   "mu_app": 75.2,
+   "fwhm_s": 0.35,
+   "height_mM": 0.095,
+   "N_5.54": 262,
+   "As10_rear_over_front": 0.82,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 3.51,
+   "mu_app": 51.6,
+   "fwhm_s": 0.52,
+   "height_mM": 0.097,
+   "N_5.54": 254,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  },
+  "lithium Li+": {
+   "t_mig_s": 4.53,
+   "mu_app": 39.9,
+   "fwhm_s": 0.66,
+   "height_mM": 0.099,
+   "N_5.54": 261,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "A_det10": {
+  "wall_s": 6.7,
+  "det_node_mm": 9.95,
+  "joule_W_per_m": 0.046,
+  "dT_K": 0.006,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.0389,
+  "potassium K+": {
+   "t_mig_s": 3.18,
+   "mu_app": 75.4,
+   "fwhm_s": 1.09,
+   "height_mM": 0.095,
+   "N_5.54": 47,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 4.65,
+   "mu_app": 51.5,
+   "fwhm_s": 1.55,
+   "height_mM": 0.097,
+   "N_5.54": 50,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  },
+  "lithium Li+": {
+   "t_mig_s": 5.98,
+   "mu_app": 40.1,
+   "fwhm_s": 1.98,
+   "height_mM": 0.099,
+   "N_5.54": 50,
+   "As10_rear_over_front": 0.98,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "A_det20": {
+  "wall_s": 10.6,
+  "det_node_mm": 20.05,
+  "joule_W_per_m": 0.046,
+  "dT_K": 0.006,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.0389,
+  "potassium K+": {
+   "t_mig_s": 11.26,
+   "mu_app": 75.1,
+   "fwhm_s": 1.13,
+   "height_mM": 0.091,
+   "N_5.54": 553,
+   "As10_rear_over_front": 0.77,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 16.43,
+   "mu_app": 51.5,
+   "fwhm_s": 1.63,
+   "height_mM": 0.093,
+   "N_5.54": 561,
+   "As10_rear_over_front": 0.85,
+   "trace_still_rising_at_end": false
+  },
+  "lithium Li+": {
+   "t_mig_s": 21.17,
+   "mu_app": 40.0,
+   "fwhm_s": 2.1,
+   "height_mM": 0.094,
+   "N_5.54": 564,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "A_det25": {
+  "wall_s": 12.4,
+  "det_node_mm": 24.99,
+  "joule_W_per_m": 0.046,
+  "dT_K": 0.006,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.0389,
+  "potassium K+": {
+   "t_mig_s": 15.19,
+   "mu_app": 75.2,
+   "fwhm_s": 1.13,
+   "height_mM": 0.089,
+   "N_5.54": 1006,
+   "As10_rear_over_front": 0.69,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 22.18,
+   "mu_app": 51.5,
+   "fwhm_s": 1.67,
+   "height_mM": 0.091,
+   "N_5.54": 976,
+   "As10_rear_over_front": 0.81,
+   "trace_still_rising_at_end": false
+  },
+  "lithium Li+": {
+   "t_mig_s": 28.6,
+   "mu_app": 39.9,
+   "fwhm_s": 2.14,
+   "height_mM": 0.092,
+   "N_5.54": 992,
+   "As10_rear_over_front": 0.89,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "B_imid_0p1": {
+  "wall_s": 7.0,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.059,
+  "dT_K": 0.008,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.0388,
+  "potassium K+": {
+   "t_mig_s": 7.13,
+   "mu_app": 76.1,
+   "fwhm_s": 1.09,
+   "height_mM": 0.094,
+   "N_5.54": 239,
+   "As10_rear_over_front": 0.96,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 10.43,
+   "mu_app": 52.1,
+   "fwhm_s": 1.55,
+   "height_mM": 0.095,
+   "N_5.54": 250,
+   "As10_rear_over_front": 1.0,
+   "trace_still_rising_at_end": false
+  },
+  "lithium Li+": {
+   "t_mig_s": 13.45,
+   "mu_app": 40.4,
+   "fwhm_s": 2.06,
+   "height_mM": 0.094,
+   "N_5.54": 237,
+   "As10_rear_over_front": 1.04,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "B_imid_2": {
+  "wall_s": 6.9,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.059,
+  "dT_K": 0.008,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.0377,
+  "potassium K+": {
+   "t_mig_s": 7.99,
+   "mu_app": 67.9,
+   "fwhm_s": 1.58,
+   "height_mM": 1.421,
+   "N_5.54": 141,
+   "As10_rear_over_front": 0.37,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 10.78,
+   "mu_app": 50.3,
+   "fwhm_s": 1.77,
+   "height_mM": 1.705,
+   "N_5.54": 205,
+   "As10_rear_over_front": 1.0,
+   "trace_still_rising_at_end": false
+  },
+  "lithium Li+": {
+   "t_mig_s": 13.27,
+   "mu_app": 40.9,
+   "fwhm_s": 2.79,
+   "height_mM": 1.416,
+   "N_5.54": 125,
+   "As10_rear_over_front": 1.86,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "C_nacl_10": {
+  "wall_s": 7.5,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.059,
+  "dT_K": 0.008,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.037,
+  "potassium K+": {
+   "t_mig_s": 7.63,
+   "mu_app": 71.2,
+   "fwhm_s": 2.12,
+   "height_mM": 0.052,
+   "N_5.54": 72,
+   "As10_rear_over_front": 0.97,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 11.15,
+   "mu_app": 48.7,
+   "fwhm_s": 3.03,
+   "height_mM": 5.408,
+   "N_5.54": 75,
+   "As10_rear_over_front": 0.98,
+   "trace_still_rising_at_end": false
+  },
+  "chloride Cl-": {
+   "t_mig_s": 18.86,
+   "mu_app": 28.8,
+   "fwhm_s": 3.75,
+   "height_mM": 0.0,
+   "N_5.54": 140,
+   "As10_rear_over_front": 0.23,
+   "trace_still_rising_at_end": true
+  }
+ },
+ "C_nacl_30": {
+  "wall_s": 8.0,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.059,
+  "dT_K": 0.008,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.0369,
+  "potassium K+": {
+   "t_mig_s": 8.59,
+   "mu_app": 63.2,
+   "fwhm_s": 4.26,
+   "height_mM": 0.027,
+   "N_5.54": 23,
+   "As10_rear_over_front": 1.04,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 12.55,
+   "mu_app": 43.3,
+   "fwhm_s": 5.95,
+   "height_mM": 8.549,
+   "N_5.54": 25,
+   "As10_rear_over_front": 1.0,
+   "trace_still_rising_at_end": false
+  },
+  "chloride Cl-": {
+   "t_mig_s": 20.0,
+   "mu_app": 27.1,
+   "fwhm_s": 5.11,
+   "height_mM": 0.001,
+   "N_5.54": 85,
+   "As10_rear_over_front": 0.0,
+   "trace_still_rising_at_end": true
+  }
+ },
+ "kappa_tris_0p1": {
+  "plug_S_per_m": 0.0864,
+  "bge_S_per_m": 0.0836,
+  "j_A_per_m2": 1394.1,
+  "E_V_per_m": 16666.7,
+  "slice1_t_s": 0.03,
+  "slice0_bge_S_per_m_DEFECT": 0.1129
+ },
+ "kappa_imid_0p1": {
+  "plug_S_per_m": 0.1117,
+  "bge_S_per_m": 0.1089,
+  "j_A_per_m2": 1815.8,
+  "E_V_per_m": 16666.7,
+  "slice1_t_s": 0.03,
+  "slice0_bge_S_per_m_DEFECT": 0.1132
+ },
+ "kappa_nacl_10": {
+  "plug_S_per_m": 0.236,
+  "bge_S_per_m": 0.1089,
+  "j_A_per_m2": 1815.8,
+  "E_V_per_m": 16666.7,
+  "slice1_t_s": 0.029,
+  "slice0_bge_S_per_m_DEFECT": 0.1132
+ },
+ "kappa_nacl_30": {
+  "plug_S_per_m": 0.4878,
+  "bge_S_per_m": 0.1089,
+  "j_A_per_m2": 1815.8,
+  "E_V_per_m": 16666.7,
+  "slice1_t_s": 0.029,
+  "slice0_bge_S_per_m_DEFECT": 0.1132
+ },
+ "H2_Cl10_det15": {
+  "wall_s": 8.5,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.057,
+  "dT_K": 0.008,
+  "joule_warn": false,
+  "pH": 8.38,
+  "dt_save_s": 0.037,
+  "potassium K+": {
+   "t_mig_s": 7.25,
+   "mu_app": 74.9,
+   "fwhm_s": 1.15,
+   "height_mM": 0.091,
+   "N_5.54": 222,
+   "As10_rear_over_front": 0.77,
+   "trace_still_rising_at_end": false
+  },
+  "ammonium NH4+": {
+   "t_mig_s": 8.25,
+   "mu_app": 65.8,
+   "fwhm_s": 1.18,
+   "height_mM": 0.099,
+   "N_5.54": 269,
+   "As10_rear_over_front": 0.76,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 10.54,
+   "mu_app": 51.5,
+   "fwhm_s": 1.48,
+   "height_mM": 0.101,
+   "N_5.54": 281,
+   "As10_rear_over_front": 0.88,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "H2_Cl10_det25": {
+  "wall_s": 15.5,
+  "det_node_mm": 24.99,
+  "joule_W_per_m": 0.057,
+  "dT_K": 0.008,
+  "joule_warn": false,
+  "pH": 8.38,
+  "dt_save_s": 0.037,
+  "potassium K+": {
+   "t_mig_s": 15.21,
+   "mu_app": 75.1,
+   "fwhm_s": 1.22,
+   "height_mM": 0.086,
+   "N_5.54": 860,
+   "As10_rear_over_front": 0.71,
+   "trace_still_rising_at_end": false
+  },
+  "ammonium NH4+": {
+   "t_mig_s": 17.28,
+   "mu_app": 66.1,
+   "fwhm_s": 1.22,
+   "height_mM": 0.094,
+   "N_5.54": 1110,
+   "As10_rear_over_front": 0.69,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 22.2,
+   "mu_app": 51.5,
+   "fwhm_s": 1.55,
+   "height_mM": 0.096,
+   "N_5.54": 1131,
+   "As10_rear_over_front": 0.77,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "H2_Cl2_det15": {
+  "wall_s": 8.7,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.012,
+  "dT_K": 0.002,
+  "joule_warn": false,
+  "pH": 9.22,
+  "dt_save_s": 0.0353,
+  "potassium K+": {
+   "t_mig_s": 7.67,
+   "mu_app": 70.8,
+   "fwhm_s": 1.2,
+   "height_mM": 0.088,
+   "N_5.54": 226,
+   "As10_rear_over_front": 0.4,
+   "trace_still_rising_at_end": false
+  },
+  "ammonium NH4+": {
+   "t_mig_s": 14.73,
+   "mu_app": 36.9,
+   "fwhm_s": 1.91,
+   "height_mM": 0.108,
+   "N_5.54": 331,
+   "As10_rear_over_front": 0.43,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 11.06,
+   "mu_app": 49.1,
+   "fwhm_s": 1.62,
+   "height_mM": 0.096,
+   "N_5.54": 257,
+   "As10_rear_over_front": 0.52,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "H2_Cl2_det25": {
+  "wall_s": 16.6,
+  "det_node_mm": 24.99,
+  "joule_W_per_m": 0.012,
+  "dT_K": 0.002,
+  "joule_warn": false,
+  "pH": 9.22,
+  "dt_save_s": 0.0353,
+  "potassium K+": {
+   "t_mig_s": 16.04,
+   "mu_app": 71.2,
+   "fwhm_s": 1.31,
+   "height_mM": 0.084,
+   "N_5.54": 835,
+   "As10_rear_over_front": 0.14,
+   "trace_still_rising_at_end": false
+  },
+  "ammonium NH4+": {
+   "t_mig_s": 30.6,
+   "mu_app": 37.3,
+   "fwhm_s": 2.19,
+   "height_mM": 0.094,
+   "N_5.54": 1080,
+   "As10_rear_over_front": 0.28,
+   "trace_still_rising_at_end": false
+  },
+  "sodium Na+": {
+   "t_mig_s": 23.07,
+   "mu_app": 49.5,
+   "fwhm_s": 1.7,
+   "height_mM": 0.092,
+   "N_5.54": 1026,
+   "As10_rear_over_front": 0.3,
+   "trace_still_rising_at_end": false
+  }
+ }
+}

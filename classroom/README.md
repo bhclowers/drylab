@@ -52,6 +52,7 @@ line in the exercises document points into them.
 | Worksheet Ex 3 (triage) | masters/student_ws_ex3.md | rendered/…ex3_SAMPLE.pdf | BUILT (template exemplar) |
 | Worksheet + key 2A rev 2 (trends design, Wenzel-anchored, needs v0.24.7 app) | masters/student_ws_ex2a.md + masters/key_ex2a.md | rendered/…ex2a.pdf | CURRENT (rev 1 superseded same session; anchors measured at v0.24.7) |
 | Worksheets 2, 4, 5, 6, 7 | — | — | REMAINING (Ex 5 one-sheet-vs-two undecided) |
+| Worksheet + key 8 (CE lab after the CE lectures: injection-limited N, EMD with imidazole co-ion, antistacking; 45 min) | masters/student_ws_ex8.md + masters/key_ex8.md | rendered/…ex8_ce.pdf + …key_ex8.pdf | CURRENT (measured at v0.24.7, validation/ex8/; students read conductivity at time slice 1, see issues.md) |
 
 ## Worksheet template rules (derived from the two exemplars)
 

@@ -856,3 +856,18 @@ graph in-process (marimo 0.24 in this sandbox): missing cell parameters,
 broken md strings, and bad wiring all surface. All five sections
 constructed after the v0.24.7 edits. Cheap enough to be the standard
 post-edit gate for drylab_nb.py.
+
+## 2026-11-09 — CE classroom scenarios: what the default geometry can and cannot teach [MEASUREMENT]
+- At the app defaults the 0.8 mm (1/e) Gaussian plug (sigma 0.566 mm, variance
+  0.32 mm^2) is ~11x the diffusion variance for K+ at 500 V, so N is
+  injection-limited: N stays 226-263 from 500 to 1500 V while the diffusion-only
+  formula predicts 2920-8760. Detector position is the working lever: N ~ l^2
+  (47/226/550/1001 at l = 4/9/14/19 mm) and FWHM in seconds stays ~1.1 s.
+- Imidazole (52.0) as the BGE co-ion makes K+/Na+/Li+ a one-run EMD demonstration:
+  at 2 mM, K+ fronts (As10 0.37), Na+ (51.9, matched) stays symmetric (1.00),
+  Li+ tails (1.86). With Tris as co-ion all three front AND Li+ is sharpened by
+  the faster cations ahead (transient ITP) — avoid Tris for the shape lesson.
+- A dilute BGE brings EMD back at trace sample levels: in Tris 30/Cl 2 (pH 9.22)
+  only ~2 mM TrisH+ is the co-ion, so 0.1 mM K+ fronts (As10 0.40 -> 0.14).
+- Use 257 grid points for any shape or width question; 129 gives ~10-20 %
+  FWHM quantization noise and ripples at sharp edges. 257-point runs take 7-16 s.

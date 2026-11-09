@@ -1263,3 +1263,15 @@ reading.
 
 **Scope not taken:** HPLC and CE sections still have no equations blocks
 (pre-existing gap, on the docket); ?tab= remains parked.
+
+## 2026-11-09 — Exercise 8 (CE lab after the two CE lectures) [HUMAN asked; ASSISTANT design]
+Brian asked for "a new drylab login exercise focusing the lessons from the CE
+lectures", ~45 min. Read "login" as "lab" (flagged). Ex 6 already covers EOF
+arrival order, so Ex 8 targets what the lectures added: j = kappa E (Q1),
+injection- vs diffusion-limited plates (Part A), electromigration dispersion with
+the imidazole co-ion (Part B), antistacking from a salty matrix (Part C);
+homework: N vs l^2, K+/NH4+ pH selectivity in Tris/chloride, Joule scaling.
+No preset (CE has none); students edit the Composition table. Masters:
+classroom/masters/student_ws_ex8.md, key_ex8.md; measurements:
+validation/ex8/ (harness.py reproduces the CE cell's readouts; measure_ex8.py
+regenerates key_values.json in four <1 min sections). All four QA gates passed.
