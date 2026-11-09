@@ -187,7 +187,9 @@ of K⁺ in a salt solution:
 
 The app will warn that sodium and chloride exceed 10 % of the BGE. Run
 anyway. Chloride migrates toward the inlet and never reaches the
-detector, so ignore its row in the results table.
+detector, so ignore its row in the results table. The 30 mM sodium peak
+will dwarf the K⁺ trace: click **sodium Na+** and **chloride Cl-** in the
+electropherogram legend to hide them, and the axis rescales to K⁺.
 
 **Q10. Predict.** Compared with K⁺ at 0.1 mM in Part B (your first
 table), will the K⁺ peak in the salty sample be wider, narrower or the

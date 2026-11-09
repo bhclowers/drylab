@@ -44,6 +44,8 @@ Tris BGE, samples at 0.1 mM, 500 V, 20 s, detector 15 mm, EOF 0.
 | sodium Na+ | 10.52 | 1.59 | 243 |
 | lithium Li+ | 13.59 | 2.02 | 251 |
 
+<div class="fig"><img src="fig_ex8/a1_start_500V.png"><br>Figure 1. Electropherogram students should see at the start (Tris BGE, 0.1 mM samples, 500 V, detector 15 mm). Three symmetric peaks. BGE traces are greyed out in the legend because the app hides them.</div>
+
 ## Q1 — Conductivity from the current
 
 $$\kappa = \frac{j}{E} = \frac{1394.1\ \mathrm{A\,m^{-2}}}{16667\ \mathrm{V\,m^{-1}}} = 0.0836\ \mathrm{S\,m^{-1}}$$
@@ -54,6 +56,8 @@ They agree because the app sets j once from the BGE conductivity and the
 field, j = κE. **The point to land:** the voltage is the control, and
 the current is a property of the buffer. A group that reads 0.113 S/m
 has read slice 0 (see the defect note).
+
+<div class="fig"><img src="fig_ex8/a2_start_profile_slice1.png"><br>Figure 2. Spatial profile at time slice 1 with the conductivity overlay (dashed, right axis). The BGE reads 0.0836 S/m. The plug at 6 mm reads slightly higher. Plotly auto-scales the right axis to the tiny 3 % bump, so its tick labels look odd; students should read the flat baseline.</div>
 
 ---
 
@@ -70,6 +74,8 @@ Ratio **3**: N should grow in proportion to V.
 | 500 | 7.22 | 1.13 | 226 | 0.05 |
 | 1000 | 3.61 | 0.54 | 248 | 0.18 |
 | 1500 | 2.41 | 0.35 | 263 | 0.41 |
+
+<div class="fig"><img src="fig_ex8/a3_1000V.png" style="width:49%;display:inline-block"><img src="fig_ex8/a4_1500V.png" style="width:49%;display:inline-block"><br>Figure 3. 1000 V (left, 12 s run) and 1500 V (right, 8 s run). Peaks arrive sooner and look narrower in seconds, but N barely moves. Note j in the stamp doubles and triples with the voltage (2788.1 and 4182.2 A/m²): the current follows the field.</div>
 
 N rises only **16 %** for a threefold voltage, and is about 1/13 of the
 diffusion-only prediction at 500 V.
@@ -114,6 +120,8 @@ FWHM in seconds: **about the same**. The injection width in time is
 |---|---|---|---|
 | 25 | 15.19 | 1.13 | 1001 |
 
+<div class="fig"><img src="fig_ex8/a5_det25.png"><br>Figure 4. Detector at 25 mm (500 V, 36 s run). Same peak widths in seconds as Figure 1, but spread over a longer time axis: the peaks look sharper because N is 4.4 times larger.</div>
+
 N rose by **4.4 times** (226 → 1001), close to (19/9)² = 4.46. The width
 in seconds did not change (1.13 s). **The lever when the injection
 dominates is migration distance (or a shorter plug), not voltage.** The
@@ -129,6 +137,8 @@ against grows.
 | K⁺ | 7.13 | 1.09 | symmetric |
 | Na⁺ | 10.43 | 1.55 | symmetric |
 | Li⁺ | 13.45 | 2.06 | symmetric |
+
+<div class="fig"><img src="fig_ex8/b1_imid_0p1.png"><br>Figure 5. Imidazole co-ion, 0.1 mM samples. Indistinguishable from Figure 1 at this concentration.</div>
 
 pH stays 4.93. Imidazole (pKa 7.05) is fully protonated at this pH, so
 12 mM imidazolium balances 12 mM acetate, exactly as Tris did.
@@ -148,6 +158,8 @@ pH stays 4.93. Imidazole (pKa 7.05) is fully protonated at this pH, so
 | K⁺ | 7.99 | 1.58 | 1.421 | 0.37 |
 | Na⁺ | 10.78 | 1.77 | 1.705 | 1.00 |
 | Li⁺ | 13.27 | 2.79 | 1.416 | 1.86 |
+
+<div class="fig"><img src="fig_ex8/b2_imid_2.png"><br>Figure 6. Imidazole co-ion, 2 mM samples. K⁺ (faster than the co-ion) has a slow rise and a sharp drop. Na⁺ (matched) stays symmetric. Li⁺ (slower) has a sharp rise and a long tail. Remind students that in a time trace the front of the zone arrives first, so a diffuse front is the slow rise on the left.</div>
 
 The asymmetry column is for the instructor: the app does not report it,
 and students describe the shapes in words. K⁺'s maximum moved later
@@ -188,6 +200,10 @@ it leaves.
 | K⁺ height | 0.027 mM |
 | κ in the plug (slice 1) | 0.488 S/m |
 | κ in the BGE (slice 1) | 0.109 S/m |
+
+<div class="fig"><img src="fig_ex8/c1_salty_30.png" style="width:49%;display:inline-block"><img src="fig_ex8/c1b_salty_30_Na_hidden.png" style="width:49%;display:inline-block"><br>Figure 7. Salty sample as first drawn (left): the 30 mM sodium peak fills the axis and K⁺ is invisible. After clicking sodium Na+ and chloride Cl- off in the legend (right), the K⁺ zone appears flat-topped and about four times wider than in Figure 5. The faint chloride rise at the far right of the left panel is numerical residue at the 0.001 mM level.</div>
+
+<div class="fig"><img src="fig_ex8/c2_salty_profile_slice1.png"><br>Figure 8. Spatial profile at time slice 1 with the conductivity overlay: 0.488 S/m at the plug center against 0.109 S/m in the BGE.</div>
 
 ## Q12 — Reconcile
 
@@ -237,6 +253,8 @@ salt content of the sample (Part C).
 | 20 | 14 | 30 | 11.26 | 1.13 | 550 |
 | 25 | 19 | 36 | 15.19 | 1.13 | 1001 |
 
+<div class="fig"><img src="fig_ex8/h1_N_vs_l2.png"><br>Figure 9. The plot students should produce for H1.</div>
+
 A least-squares line through the origin gives a slope of 2.78 mm⁻², so
 σ = 1/√2.78 = **0.60 mm**, against the 0.57 mm stated. The slightly
 larger value is the diffusion variance, which grows with ℓ and is folded
@@ -250,6 +268,8 @@ $$\alpha_{NH_4^+} = \frac{1}{1+10^{\,pH-pK_a}} \qquad \mu_{eff} = \alpha\,\mu_{e
 |---|---|---|---|---|---|---|
 | 10 | 8.38 | 0.881 | 67.1 | 65.8 | 0.51 | 1.00 |
 | 2 | 9.22 | 0.517 | 39.4 | 36.9 | 2.68 | 4.91 |
+
+<div class="fig"><img src="fig_ex8/h2a_pH838_det25.png" style="width:49%;display:inline-block"><img src="fig_ex8/h2b_pH922_det25.png" style="width:49%;display:inline-block"><br>Figure 10. K⁺/NH₄⁺ at detector 25 mm: pH 8.38 (left, 10 mM chloride) and pH 9.22 (right, 2 mM chloride). At pH 9.22 NH₄⁺ migrates behind the Na⁺ marker, and all three peaks front because the co-ion (TrisH⁺, about 2 mM) is dilute.</div>
 
 Measured times (K⁺, NH₄⁺): 10 mM chloride, 15 mm: 7.25 / 8.25 s, FWHM
 1.15 / 1.18 s. At 25 mm: 15.21 / 17.28 s, FWHM 1.22 / 1.22 s. 2 mM

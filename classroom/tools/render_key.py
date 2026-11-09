@@ -24,7 +24,7 @@ absolute values inside table cells must be written \mid…\mid, never
 
 Usage: python render_key.py <key.md> <out.pdf>
 """
-import base64, html, io, re, sys
+import base64, html, io, os, re, sys
 import matplotlib; matplotlib.use("Agg")
 from matplotlib import pyplot as plt
 from matplotlib.font_manager import FontProperties
@@ -51,6 +51,8 @@ hr { border: none; border-top: 1px solid #c9dbe4; margin: 1.2em 0; }
 strong { color: #000; }
 .eq { text-align: center; margin: 0.55em 0 0.65em 0; }
 .eq img { max-width: 100%; height: auto; }
+p > img, .fig img { max-width: 100%; height: auto; display: block; margin: 0.4em auto; }
+.fig { break-inside: avoid; text-align: center; font-size: 9pt; color: #555; }
 img.imath { display: inline-block; }
 """
 
@@ -138,7 +140,9 @@ def main(src_path, out_path):
     assert "IMATHPLACEHOLDER" not in body
     HTML(string=f"<html><head><meta charset='utf-8'>"
                 f"<style>{CSS.replace('__BODY_PT__', str(BODY_PT))}</style>"
-                f"</head><body>{body}</body></html>").write_pdf(out_path)
+                f"</head><body>{body}</body></html>",
+         # relative image paths (key figures) resolve against the master's folder
+         base_url=os.path.dirname(os.path.abspath(src_path))).write_pdf(out_path)
     print(f"wrote {out_path} ({len(blocks)} display, {len(inline)} inline "
           f"typeset equations)")
     return 0

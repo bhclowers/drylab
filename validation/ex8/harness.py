@@ -7,7 +7,8 @@ sys.path.insert(0, "/home/claude/bhclowers/drylab")
 from drylab.ce import CEConditions, CESpecies, grid_positions, simulate_cze, joule_report
 import drylab
 
-def run(rows, L_mm=30, V=500, t_s=20, pts=129, det_mm=15.0, eof=0.0):
+def simulate(rows, L_mm=30, V=500, t_s=20, pts=129, eof=0.0):
+    """The CE cell's march, exactly as drylab_nb.py sets it up. Returns (field, cond, wall_s)."""
     cond = CEConditions(length_m=L_mm / 1000, voltage_v=float(V), n_points=pts,
                         t_final_s=float(t_s), eof_mobility=eof * 1e-9, save_every=3)
     sp = [CESpecies(r[0], (r[1],), (r[2] * 1e-9,), (r[3],)) for r in rows]
@@ -16,7 +17,12 @@ def run(rows, L_mm=30, V=500, t_s=20, pts=129, det_mm=15.0, eof=0.0):
     cen = (0.2 if sum(mu_app) >= 0 else 0.8) * cond.length_m
     for i, r in enumerate(rows):
         c[i] = r[4] if r[5] == "BGE" else r[4] * np.exp(-((x - cen) / 0.0008) ** 2)
-    t0 = time.time(); f = simulate_cze(sp, c, cond); wall = time.time() - t0
+    t0 = time.time(); f = simulate_cze(sp, c, cond)
+    return f, cond, time.time() - t0
+
+
+def run(rows, L_mm=30, V=500, t_s=20, pts=129, det_mm=15.0, eof=0.0):
+    f, cond, wall = simulate(rows, L_mm=L_mm, V=V, t_s=t_s, pts=pts, eof=eof)
     node, tr = f.detector_trace(det_mm)
     out = {"wall_s": round(wall, 1), "det_node_mm": round(float(f.position_mm[node]), 2)}
     k = f.times_s.size - 1
