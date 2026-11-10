@@ -23,7 +23,7 @@ BGE, against the true 4.93 and 0.0836 S/m). Every slice from 1
 sheet sends students to slice 1. Logged in `.context/memory/issues.md`
 with the one-line fix.
 
-**Timing.** Ten runs in class, 8 to 15 s each at 257 points.
+**Timing.** Nine runs in class, 7 to 20 s each at 257 points.
 
 ---
 
@@ -233,12 +233,82 @@ ratio of 1.95 against a conductivity ratio of 0.236/0.109 = 2.17.
 
 ---
 
-## Q13 — Class checkpoint
+## Part D — pK_a, pH and migration order
+
+Imidazole BGE (12 mM, pH 4.93), 1000 V, 30 s. Sample: K⁺ marker,
+pyridine and aniline, each 0.1 mM.
+
+## Q13 — Predictions
+
+Fully protonated, **anilinium is faster** (32.5 against 30.0).
+
+$$\alpha_{pyr} = \frac{1}{1+10^{\,4.93-5.16}} = 0.629 \qquad \alpha_{an} = \frac{1}{1+10^{\,4.93-4.80}} = 0.426$$
+
+$$\mu_{eff,pyr} = 0.629 \times 30.0 = 18.9 \qquad \mu_{eff,an} = 0.426 \times 32.5 = 13.8 \quad (\times10^{-9}\ \mathrm{m^2\,V^{-1}\,s^{-1}})$$
+
+$$t = \frac{\ell}{\mu_{eff}E}: \quad t_{pyr} = \frac{9\times10^{-3}}{(18.9\times10^{-9})(33333)} = 14.3\ \mathrm{s} \qquad t_{an} = 19.5\ \mathrm{s}$$
+
+Predicted order: K⁺, then **pyridine**, then aniline.
+
+## Q14 — Measured
+
+| Analyte | t (s) | Apparent mobility | Predicted t (s) |
+|---|---|---|---|
+| K⁺ | 3.57 | 76.1 | 3.5 |
+| pyridine | 13.95 | 19.5 | 14.3 |
+| aniline | 18.91 | 14.4 | 19.5 |
+
+<div class="fig"><img src="fig_ex8/d1_weak_bases_pH493.png"><br>Figure 9. Pyridine and aniline at pH 4.93, 1000 V. Pyridine arrives first even though fully protonated anilinium is the faster ion.</div>
+
+**Point to land:** the order reversed from the fully protonated order.
+At pH 4.93 pyridine (pK_a 5.16) is 63 % protonated and aniline (pK_a 4.80)
+only 43 %, so pyridine carries charge for more of the time. A weak
+electrolyte's speed depends on its charge fraction as much as on its
+mobility.
+
+**On the 3 % gap:** both measured apparent mobilities run about 3 % above
+α μ_ep. Both bases are slower than imidazolium (52.0), so both zones tail
+slightly (asymmetry 1.3 and 1.4 at 10 % height), and a tailing peak
+reaches its maximum early. This is the Part B effect, and it biases any
+mobility taken from the time at the maximum.
+
+## Q15 — Co-migration pH
+
+Set α μ_ep equal:
+
+$$\frac{30.0}{1+10^{\,pH-5.16}} = \frac{32.5}{1+10^{\,pH-4.80}} \quad\Rightarrow\quad pH = 4.00, \quad \mu_{eff} = 28.1$$
+
+(Solve numerically, by trial pH values, or by plotting both sides.)
+
+$$4.00 = 4.756 + \log\frac{c_{im}}{20-c_{im}} \quad\Rightarrow\quad c_{im} = 2.98 \approx 3\ \mathrm{mM}$$
+
+With 3 mM imidazole the app reports **pH 4.02**, and the two peaks
+co-migrate almost exactly: pyridine at 8.95 s and aniline at 8.94 s.
+Above pH 4.00 pyridine leads, and below it aniline leads.
+
+<div class="fig"><img src="fig_ex8/d2_weak_bases_pH402.png"><br>Figure 10. 3 mM imidazole (pH 4.02), 1000 V. Pyridine and aniline overlap almost perfectly at the predicted pH. Both tail strongly.</div>
+
+**For discussion:** the merged peak tails strongly (asymmetry 3.1 and
+3.4). With only 3 mM imidazolium, the co-ion is dilute, so 0.1 mM of
+slow sample cations changes the local conductivity more than at 12 mM,
+which is Part B again. The tailing also pulls both apparent mobilities
+up to 30.3–30.4, about 8 % above the predicted 28.1. K⁺ shows the mirror
+image: it fronts (asymmetry 0.74), and its apparent mobility reads low
+(74.6 against 76.2). The crossover pH is still predicted correctly
+because both bases are biased the same way.
+
+An intermediate check if a group rounds to 4 mM: pH 4.16, pyridine 9.32
+s and aniline 9.64 s, still in the pH 4.93 order but nearly merged.
+
+---
+
+## Q16 — Class checkpoint
 
 Any defensible choice. The strongest answers connect each effect to a
 preparation step: plug length or injection time (Part A), sample
-concentration relative to the co-ion and co-ion choice (Part B), and the
-salt content of the sample (Part C).
+concentration relative to the co-ion and co-ion choice (Part B), the
+salt content of the sample (Part C), and the BGE pH relative to the
+analytes' pK_a values (Part D).
 
 ---
 
@@ -253,7 +323,7 @@ salt content of the sample (Part C).
 | 20 | 14 | 30 | 11.26 | 1.13 | 550 |
 | 25 | 19 | 36 | 15.19 | 1.13 | 1001 |
 
-<div class="fig"><img src="fig_ex8/h1_N_vs_l2.png"><br>Figure 9. The plot students should produce for H1.</div>
+<div class="fig"><img src="fig_ex8/h1_N_vs_l2.png"><br>Figure 11. The plot students should produce for H1.</div>
 
 A least-squares line through the origin gives a slope of 2.78 mm⁻², so
 σ = 1/√2.78 = **0.60 mm**, against the 0.57 mm stated. The slightly
@@ -269,7 +339,7 @@ $$\alpha_{NH_4^+} = \frac{1}{1+10^{\,pH-pK_a}} \qquad \mu_{eff} = \alpha\,\mu_{e
 | 10 | 8.38 | 0.881 | 67.1 | 65.8 | 0.51 | 1.00 |
 | 2 | 9.22 | 0.517 | 39.4 | 36.9 | 2.68 | 4.91 |
 
-<div class="fig"><img src="fig_ex8/h2a_pH838_det25.png" style="width:49%;display:inline-block"><img src="fig_ex8/h2b_pH922_det25.png" style="width:49%;display:inline-block"><br>Figure 10. K⁺/NH₄⁺ at detector 25 mm: pH 8.38 (left, 10 mM chloride) and pH 9.22 (right, 2 mM chloride). At pH 9.22 NH₄⁺ migrates behind the Na⁺ marker, and all three peaks front because the co-ion (TrisH⁺, about 2 mM) is dilute.</div>
+<div class="fig"><img src="fig_ex8/h2a_pH838_det25.png" style="width:49%;display:inline-block"><img src="fig_ex8/h2b_pH922_det25.png" style="width:49%;display:inline-block"><br>Figure 12. K⁺/NH₄⁺ at detector 25 mm: pH 8.38 (left, 10 mM chloride) and pH 9.22 (right, 2 mM chloride). At pH 9.22 NH₄⁺ migrates behind the Na⁺ marker, and all three peaks front because the co-ion (TrisH⁺, about 2 mM) is dilute.</div>
 
 Measured times (K⁺, NH₄⁺): 10 mM chloride, 15 mm: 7.25 / 8.25 s, FWHM
 1.15 / 1.18 s. At 25 mm: 15.21 / 17.28 s, FWHM 1.22 / 1.22 s. 2 mM

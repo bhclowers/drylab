@@ -4,7 +4,7 @@ default "Studio (default)" theme with legends on. BGE traces start hidden, as in
 
 Static export needs kaleido plus a Chromium:
     BROWSER_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome python3 figures_ex8.py SECTION
-Sections (each under a minute at 257 points): A, B, C, H
+Sections (each under a minute at 257 points): A, B, C, D, H
 Output: classroom/masters/fig_ex8/*.png (referenced by key_ex8.md).
 The one non-app figure, H1 (N against l^2), is the plot students are asked to make by hand.
 """
@@ -17,7 +17,7 @@ from dataclasses import replace
 import numpy as np
 
 from harness import DEFAULT, simulate, with_conc
-from measure_ex8 import BASE, IMID, h2, salty
+from measure_ex8 import BASE, IMID, h2, salty, weak_bases
 
 sys.path.insert(0, "/home/claude/bhclowers/drylab")
 from drylab.plotting.ce import CEElectropherogramPlot, CEProfilePlot  # noqa: E402
@@ -104,7 +104,12 @@ def section_h():
     epg("h2b_pH922_det25", h2(2.0), det_mm=25.0, t_s=44)
 
 
-SECTIONS = {"A": section_a, "B": section_b, "C": section_c, "H": section_h}
+def section_d():
+    epg("d1_weak_bases_pH493", weak_bases(12.0), V=1000, t_s=30)
+    epg("d2_weak_bases_pH402", weak_bases(3.0), V=1000, t_s=30)
+
+
+SECTIONS = {"A": section_a, "B": section_b, "C": section_c, "D": section_d, "H": section_h}
 if __name__ == "__main__":
     if len(sys.argv) != 2 or sys.argv[1] not in SECTIONS:
         raise SystemExit(f"usage: figures_ex8.py {{{'|'.join(SECTIONS)}}}")

@@ -1275,3 +1275,14 @@ No preset (CE has none); students edit the Composition table. Masters:
 classroom/masters/student_ws_ex8.md, key_ex8.md; measurements:
 validation/ex8/ (harness.py reproduces the CE cell's readouts; measure_ex8.py
 regenerates key_values.json in four <1 min sections). All four QA gates passed.
+
+## 2026-11-09 — Ex 8 Part D (pKa/pH) and a generic worksheet → Word builder [HUMAN asked; ASSISTANT design]
+Brian asked for another question using pKa and pH, and the worksheet as Word.
+Part D uses pyridine (30.0, pKa 5.16) and aniline (32.5, pKa 4.80): at pH 4.93
+the fully-charged order reverses (pyridine 13.95 s, aniline 18.91 s at 1000 V);
+students then compute the co-migration pH (4.00 -> 3 mM imidazole) and confirm
+it (app pH 4.02, 8.95 vs 8.94 s). Time plan rebalanced to 45 min (A 13, B 11,
+C 8, D 6). Apparent mobilities read 3-8 % high because both bases tail (slower
+than imidazolium): the key uses this as a Part B tie-in. Word: new
+classroom/tools/build_worksheet_docx.js converts any standard master instead of
+hand-building per exercise as Ex 1 did.

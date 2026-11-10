@@ -4,6 +4,7 @@ app's own readout logic (harness.run). Results merge into key_values.json.
 Run in sections, each under a minute at 257 grid points:
     python3 measure_ex8.py A      # Part A: voltage and detector-position runs
     python3 measure_ex8.py BC     # Parts B and C: imidazole co-ion, salty sample
+    python3 measure_ex8.py D      # Part D: pyridine/aniline, pKa and pH
     python3 measure_ex8.py kappa  # conductivities at time slice 1, and j
     python3 measure_ex8.py H2     # homework H2: K+/NH4+ in Tris/chloride at two pH values
 
@@ -62,6 +63,15 @@ def kappa_at_slice1(rows):
             "slice0_bge_S_per_m_DEFECT": round(float(np.median(f.conductivity[:, 0])), 4)}
 
 
+def weak_bases(imid_mm):
+    """Part D: K+ marker plus two weak-base cations, imidazole BGE at a chosen pH.
+    Rows follow the sheet: the Part C sodium row becomes pyridine, the chloride row aniline."""
+    return [IMID[0], ["imidazole", 1, 52.0, 7.05, imid_mm, "BGE"],
+            ["potassium K+", 1, 76.2, 14.0, 0.1, "Sample"],
+            ["pyridine", 1, 30.0, 5.16, 0.1, "Sample"],
+            ["aniline", 1, 32.5, 4.8, 0.1, "Sample"]]
+
+
 SECTIONS = {
     "A": lambda: {
         "A_start_500V_det15": run(BASE, pts=P),
@@ -82,6 +92,11 @@ SECTIONS = {
         "kappa_imid_0p1": kappa_at_slice1(IMID),
         "kappa_nacl_10": kappa_at_slice1(salty(10.0)),
         "kappa_nacl_30": kappa_at_slice1(salty(30.0)),
+    },
+    "D": lambda: {
+        "D_imid12_1000V": run(weak_bases(12.0), V=1000, t_s=30, pts=P),
+        "D_imid4_1000V": run(weak_bases(4.0), V=1000, t_s=30, pts=P),
+        "D_imid3_1000V": run(weak_bases(3.0), V=1000, t_s=30, pts=P),   # predicted crossover
     },
     "H2": lambda: {
         f"H2_Cl{cl:g}_det{det}": run(h2(cl), pts=P, det_mm=det, t_s=t)

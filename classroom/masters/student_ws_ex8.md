@@ -16,9 +16,10 @@ credit.
 | Part | Topic | Minutes |
 |---|---|---|
 | Getting started | Conditions, current and conductivity | 5 |
-| A | Where do the plates come from? | 15 |
-| B | Peak shape from the sample's own conductivity | 13 |
-| C | A salty sample | 10 |
+| A | Where do the plates come from? | 13 |
+| B | Peak shape from the sample's own conductivity | 11 |
+| C | A salty sample | 8 |
+| D | pK_a, pH and migration order | 6 |
 | Wrap-up | Class checkpoint | 2 |
 
 ---
@@ -221,12 +222,64 @@ sample preparation that would fix it.
 
 ---
 
+## Part D: pK_a, pH and migration order (6 min)
+
+Keep the imidazole BGE (12 mM). Set Applied voltage to **1000 V** and
+Run time to **30 s**. In the Composition table, keep potassium K+ at
+0.1 mM as a marker, and change the other two Sample rows:
+
+| name | valence | mobility_e9 | p_ka | concentration_mM | role |
+|---|---|---|---|---|---|
+| pyridine | 1 | 30.0 | 5.16 | 0.1 | Sample |
+| aniline | 1 | 32.5 | 4.8 | 0.1 | Sample |
+
+Pyridine and aniline are weak bases. Only the protonated form carries a
+charge, and the mobilities above are for the fully protonated cations.
+The fraction protonated and the effective mobility are
+
+> α = 1 / (1 + 10^(pH − pK_a)), μ_eff = α μ_ep
+
+**Q13. Predict.** When both are fully protonated, which cation is faster?
+Now use the background pH you recorded at the start (4.93) to fill in the
+table. The field at 1000 V is 33,333 V/m and ℓ = 9 mm.
+
+| Analyte | α at pH 4.93 | μ_eff (×10⁻⁹) | Predicted t (s) |
+|---|---|---|---|
+| pyridine | &nbsp; | &nbsp; | &nbsp; |
+| aniline | &nbsp; | &nbsp; | &nbsp; |
+
+Predicted order of arrival: ________________________________
+
+**STOP: show your predictions to the instructor before running.**
+
+**Q14. Run and reconcile.** Record the migration times and the app's
+apparent mobilities. Did the order match your prediction? Explain in
+one sentence why a slower ion can arrive first.
+
+| Analyte | t (s) | Apparent mobility (×10⁻⁹) |
+|---|---|---|
+| pyridine | &nbsp; | &nbsp; |
+| aniline | &nbsp; | &nbsp; |
+
+<div class="answer"></div>
+
+**Q15. Extend.** At some pH the two effective mobilities are equal and
+the peaks co-migrate. Find that pH by setting α μ_ep equal for the two
+bases. The BGE pH follows pH = 4.756 + log[c_im / (20 − c_im)], where
+c_im is the imidazole concentration in mM. What imidazole concentration
+gives the co-migration pH? Set it (round to the nearest mM), run, and
+describe what you see.
+
+<div class="answer tall"></div>
+
+---
+
 ## Class checkpoint (2 min)
 
-**Q13.** Each Presenter gives one sentence: of the three effects you
+**Q16.** Each Presenter gives one sentence: of the four effects you
 measured today (injection-limited plates, electromigration dispersion,
-antistacking), which would most change how you prepare and inject a real
-sample, and why?
+antistacking, pH-controlled selectivity), which would most change how
+you prepare and run a real sample, and why?
 
 <div class="answer"></div>
 

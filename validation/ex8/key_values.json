@@ -537,5 +537,113 @@
    "As10_rear_over_front": 0.3,
    "trace_still_rising_at_end": false
   }
+ },
+ "D_imid12_1000V": {
+  "wall_s": 20.4,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.238,
+  "dT_K": 0.032,
+  "joule_warn": false,
+  "pH": 4.93,
+  "dt_save_s": 0.0193,
+  "potassium K+": {
+   "t_mig_s": 3.57,
+   "mu_app": 76.1,
+   "fwhm_s": 0.52,
+   "height_mM": 0.097,
+   "N_5.54": 262,
+   "As10_rear_over_front": 0.92,
+   "trace_still_rising_at_end": false
+  },
+  "pyridine": {
+   "t_mig_s": 13.95,
+   "mu_app": 19.5,
+   "fwhm_s": 2.14,
+   "height_mM": 0.096,
+   "N_5.54": 235,
+   "As10_rear_over_front": 1.3,
+   "trace_still_rising_at_end": false
+  },
+  "aniline": {
+   "t_mig_s": 18.91,
+   "mu_app": 14.4,
+   "fwhm_s": 3.28,
+   "height_mM": 0.087,
+   "N_5.54": 184,
+   "As10_rear_over_front": 1.39,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "D_imid4_1000V": {
+  "wall_s": 19.4,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.085,
+  "dT_K": 0.011,
+  "joule_warn": false,
+  "pH": 4.16,
+  "dt_save_s": 0.0189,
+  "potassium K+": {
+   "t_mig_s": 3.62,
+   "mu_app": 75.1,
+   "fwhm_s": 0.55,
+   "height_mM": 0.095,
+   "N_5.54": 243,
+   "As10_rear_over_front": 0.79,
+   "trace_still_rising_at_end": false
+  },
+  "pyridine": {
+   "t_mig_s": 9.32,
+   "mu_app": 29.1,
+   "fwhm_s": 1.51,
+   "height_mM": 0.092,
+   "N_5.54": 212,
+   "As10_rear_over_front": 2.48,
+   "trace_still_rising_at_end": false
+  },
+  "aniline": {
+   "t_mig_s": 9.64,
+   "mu_app": 28.2,
+   "fwhm_s": 1.81,
+   "height_mM": 0.082,
+   "N_5.54": 158,
+   "As10_rear_over_front": 2.34,
+   "trace_still_rising_at_end": false
+  }
+ },
+ "D_imid3_1000V": {
+  "wall_s": 21.4,
+  "det_node_mm": 15.0,
+  "joule_W_per_m": 0.068,
+  "dT_K": 0.009,
+  "joule_warn": false,
+  "pH": 4.02,
+  "dt_save_s": 0.0186,
+  "potassium K+": {
+   "t_mig_s": 3.64,
+   "mu_app": 74.6,
+   "fwhm_s": 0.56,
+   "height_mM": 0.094,
+   "N_5.54": 236,
+   "As10_rear_over_front": 0.74,
+   "trace_still_rising_at_end": false
+  },
+  "pyridine": {
+   "t_mig_s": 8.95,
+   "mu_app": 30.3,
+   "fwhm_s": 1.71,
+   "height_mM": 0.082,
+   "N_5.54": 152,
+   "As10_rear_over_front": 3.08,
+   "trace_still_rising_at_end": false
+  },
+  "aniline": {
+   "t_mig_s": 8.94,
+   "mu_app": 30.4,
+   "fwhm_s": 1.73,
+   "height_mM": 0.081,
+   "N_5.54": 148,
+   "As10_rear_over_front": 3.37,
+   "trace_still_rising_at_end": false
+  }
  }
 }
