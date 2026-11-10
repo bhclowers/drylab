@@ -6,6 +6,9 @@
 #     "pandas>=2.0",
 #     "plotly>=5.20",
 # ]
+#
+# [tool.marimo.runtime]
+# output_max_bytes = 16_000_000
 # ///
 """drylab (marimo).
 
@@ -79,7 +82,7 @@ def _():
         GCGolayPlot,
         GCOverlayPlot,
         CEElectropherogramPlot,
-        CEProfilePlot,
+        CEProfileAnimationPlot,
         ph_from_hydronium,
         GradientProfilePlot,
         OverlayPlot,
@@ -116,7 +119,7 @@ def _():
         GCGolayPlot,
         GCOverlayPlot,
         CEElectropherogramPlot,
-        CEProfilePlot,
+        CEProfileAnimationPlot,
         ph_from_hydronium,
         GCColumn,
         GCProgram,
@@ -2783,18 +2786,9 @@ def _(CEConditions, CESpecies, CE_AVAILABLE, ce_composition, ce_eof,
 
 
 @app.cell
-def _(ce_field, mo):
-    # Scrubbing control. Free: it re-slices the stored field, never re-solves.
-    _n = ce_field.times_s.size if ce_field is not None else 1
-    ce_time_idx = mo.ui.slider(0, max(_n - 1, 1), value=_n - 1, step=1,
-                               label="Time slice")
-    return (ce_time_idx,)
-
-
-@app.cell
-def _(CEElectropherogramPlot, CEProfilePlot, ce_current_ua, ce_detector_mm,
-      ce_composition, ce_error, ce_field, ce_notice, ce_overlay, ce_run,
-      ce_time_idx, ce_warnings, joule_report, mo, np, pd,
+def _(CEElectropherogramPlot, CEProfileAnimationPlot, ce_current_ua,
+      ce_detector_mm, ce_composition, ce_error, ce_field, ce_notice,
+      ce_overlay, ce_run, ce_warnings, joule_report, mo, np, pd,
       ph_from_hydronium, plot_config, replace):
     if ce_error is not None:
         ce_panel = mo.callout(mo.md(ce_error), kind="warn")
@@ -2802,26 +2796,33 @@ def _(CEElectropherogramPlot, CEProfilePlot, ce_current_ua, ce_detector_mm,
         ce_panel = mo.callout(
             mo.md("Set the conditions, then press **Run CE simulation**. "
                   "Parameter changes deliberately do not trigger the solve; "
-                  "the time slider afterwards is free."),
+                  "the time slider on the profile plot afterwards is free."),
             kind="info")
     else:
         _r = ce_field
-        _k = min(int(ce_time_idx.value), _r.times_s.size - 1)
+        # Readouts (pH, Joule heating) describe the END of the run, the
+        # same state the electropherogram and results table summarize.
+        # Time scrubbing lives INSIDE the profile plot as animation frames
+        # (browser-side), because a marimo slider upstream of this cell
+        # rebuilt the whole tab view on every tick and reset itself
+        # mid-drag in the deployed WASM app (issues.md 2026-11-10).
+        _k = _r.times_s.size - 1
         _cfg = replace(plot_config, show_legend=True)
         if ce_overlay.value == "ph":
-            _ov = ph_from_hydronium(_r.hydronium[:, _k])
+            _ov_xt = ph_from_hydronium(_r.hydronium)
         elif ce_overlay.value == "conductivity":
-            _ov = _r.conductivity[:, _k]
+            _ov_xt = _r.conductivity
         else:
-            _ov = None
+            _ov_xt = None
         # BGE membership comes from the table's Role column, so renaming an
         # ion cannot silently change which traces are hidden.
         _roles = dict(zip(ce_composition.value["name"].astype(str).str.strip(),
                           ce_composition.value["role"].astype(str).str.strip()))
         _bge = {n for n in _r.species_names if _roles.get(n) == "BGE"}
-        _profile = CEProfilePlot(
-            _r.position_mm, _r.concentrations[:, :, _k], _r.species_names,
-            overlay_values=_ov, overlay=ce_overlay.value, hidden=_bge,
+        _profile = CEProfileAnimationPlot(
+            _r.position_mm, _r.concentrations, _r.species_names,
+            times_s=_r.times_s,
+            overlay_values_xt=_ov_xt, overlay=ce_overlay.value, hidden=_bge,
             current_density=_r.current_density,
             capillary_length_mm=float(_r.position_mm.max()),
             config=_cfg, title=None,
@@ -2884,11 +2885,11 @@ def _(CEElectropherogramPlot, CEProfilePlot, ce_current_ua, ce_detector_mm,
             _notices.append(mo.callout(mo.md(_w), kind="warn"))
 
         ce_panel = mo.vstack(_notices + [
-            mo.md(f"**t = {_r.times_s[_k]:.1f} s** of "
-                  f"{_r.times_s[-1]:.0f} s | {_r.n_steps} adaptive steps | "
-                  f"detector node at {_r.position_mm[_node]:.1f} mm"),
-            ce_time_idx,
-            mo.md("**Spatial profile** - concentrations along the capillary"),
+            mo.md(f"**{_r.times_s[-1]:.0f} s run** | {_r.n_steps} adaptive "
+                  f"steps | detector node at {_r.position_mm[_node]:.1f} mm"),
+            mo.md("**Spatial profile** - concentrations along the capillary. "
+                  "The slider and Play button on the plot scrub the run "
+                  "in the browser; t = 0 shows the injected plug."),
             mo.ui.plotly(_profile),
             mo.md("**Electropherogram** - detector trace over the whole run"),
             mo.ui.plotly(_epg),
@@ -2916,7 +2917,9 @@ def _(CEElectropherogramPlot, CEProfilePlot, ce_current_ua, ce_detector_mm,
             mo.md(
                 "*Background electrolyte traces are hidden by default: at "
                 "50-100 mM they are 25x the analyte concentration and would "
-                "flatten the peaks. Click them in the legend to show them.*"
+                "flatten the peaks. Click them in the legend to show them; "
+                "on the animated profile the y axis is fixed to the "
+                "analytes, so double-click the axis to rescale.*"
             ),
         ], gap=0.5)
     return (ce_panel,)

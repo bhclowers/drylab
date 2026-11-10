@@ -7,6 +7,7 @@ from .config import AXIS_LABELS, PAIRED_12, THEMES, PlotConfig, Theme
 from .craig import CraigPlot
 from .ce import (
     CEElectropherogramPlot,
+    CEProfileAnimationPlot,
     CEProfilePlot,
     ph_from_hydronium,
 )
@@ -25,6 +26,7 @@ __all__ = [
     "VanDeemterBuilderPlot",
     "CraigPlot",
     "CEElectropherogramPlot",
+    "CEProfileAnimationPlot",
     "CEProfilePlot",
     "GCChromatogramPlot",
     "GCGolayPlot",

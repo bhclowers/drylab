@@ -6,15 +6,18 @@ field and the two slices answer different questions:
 - :class:`CEProfilePlot` — concentrations against POSITION at one instant.
   This is what shows zones forming, stacking, and the pH gradient. It has
   no chromatographic analogue.
+- :class:`CEProfileAnimationPlot` — the same view over the whole run, with
+  plotly animation frames and the plot's own time slider, so scrubbing is
+  browser-side and cannot re-run notebook cells.
 - :class:`CEElectropherogramPlot` — concentration against TIME at a fixed
   detector position. This is the familiar trace, and is deliberately built
   to read like ``ChromatogramPlot``: same filled component traces, same
   legend and operating-point treatment.
 
 Both accept already-computed arrays rather than conditions, so neither can
-trigger a simulation. That is what makes the notebook's time slider free:
-the expensive march happens once behind a run button, and scrubbing only
-re-slices the array it returned.
+trigger a simulation. That is what makes the notebook's time scrubbing free:
+the expensive march happens once behind a run button, and the animation
+frames are cut from the arrays it returned.
 """
 from __future__ import annotations
 
@@ -149,6 +152,116 @@ class CEProfilePlot(_CEBase):
             )
         if self.overlay_values is not None:
             self._add_overlay(fig, self.position_mm, self.overlay_values)
+
+
+class CEProfileAnimationPlot(CEProfilePlot):
+    """:class:`CEProfilePlot` over the WHOLE run, scrubbed inside the plot.
+
+    Takes the full saved field (species x position x time) and emits plotly
+    animation frames with the plot's own time slider and play button.
+    Scrubbing is pure browser-side JavaScript: no Python re-executes, so the
+    surrounding notebook UI cannot rebuild (and reset) mid-drag, which is
+    exactly what happened when the slice index was a marimo slider upstream
+    of this figure (issues.md 2026-11-10).
+
+    The saved slices are thinned to at most ``max_frames`` evenly spaced
+    frames, first and last always kept: a 60 s run saves ~1500 slices, and a
+    figure carrying all of them is slow to build and to animate for no
+    visible gain. Frame arrays are cast to float32, halving the serialized
+    payload; the whole app's output must stay under marimo's
+    output_max_bytes (8 MB default), and the other tabs already use most
+    of it (issues.md 2026-11-10). Both y axes get FIXED ranges computed over every frame
+    (visible species only, on the left), because per-frame autoranging makes
+    the axes breathe while the movie plays and reads as data motion.
+    Showing a hidden BGE trace via the legend can therefore clip it;
+    double-clicking the y axis re-autoscales, and the panel text says so.
+    """
+
+    def __init__(self, position_mm, concentrations_xt, species_names,
+                 times_s, overlay_values_xt=None, max_frames=80, **kwargs):
+        conc = np.asarray(concentrations_xt, dtype=float)
+        times = np.asarray(times_s, dtype=float)
+        if conc.ndim != 3:
+            raise ValueError(
+                f"concentrations_xt must be (species, position, time), got "
+                f"shape {conc.shape}")
+        if conc.shape[2] != times.size:
+            raise ValueError(
+                f"concentrations_xt has {conc.shape[2]} time slices but "
+                f"times_s has {times.size}")
+        if max_frames < 2:
+            raise ValueError(f"max_frames must be >= 2, got {max_frames}")
+        ov = None if overlay_values_xt is None else np.asarray(
+            overlay_values_xt, dtype=float)
+        if ov is not None and ov.shape != conc.shape[1:]:
+            raise ValueError(
+                f"overlay_values_xt must be (position, time) = "
+                f"{conc.shape[1:]}, got {ov.shape}")
+        idx = np.unique(np.round(np.linspace(
+            0, times.size - 1, min(int(max_frames), times.size))).astype(int))
+        self.frame_indices = idx
+        self.frame_times_s = times[idx]
+        self.conc_xt = conc
+        self.overlay_xt = ov
+        super().__init__(
+            position_mm, conc[:, :, idx[0]], species_names,
+            overlay_values=(None if ov is None else ov[:, idx[0]]),
+            **kwargs)
+
+    def _build(self, fig: go.Figure) -> None:
+        super()._build(fig)  # traces for the first frame, overlay last
+        shown = [i for i, n in enumerate(self.species_names)
+                 if n not in self.hidden]
+        sub = self.conc_xt[shown][:, :, self.frame_indices]
+        y_max = float(sub.max()) if shown else float(
+            self.conc_xt[:, :, self.frame_indices].max())
+        fig.update_layout(yaxis=dict(range=[0.0, 1.06 * max(y_max, 1e-12)]))
+        if self.overlay_xt is not None:
+            ov = self.overlay_xt[:, self.frame_indices]
+            lo, hi = float(ov.min()), float(ov.max())
+            pad = 0.05 * max(hi - lo, 1e-9)
+            fig.update_layout(
+                yaxis2=dict(range=[lo - pad, hi + pad]))
+        frames = []
+        conc32 = self.conc_xt.astype(np.float32)
+        ov32 = (None if self.overlay_xt is None
+                else self.overlay_xt.astype(np.float32))
+        for k, t in zip(self.frame_indices, self.frame_times_s):
+            data = [go.Scatter(y=conc32[i, :, k])
+                    for i in range(len(self.species_names))]
+            if ov32 is not None:
+                data.append(go.Scatter(y=ov32[:, k]))
+            frames.append(go.Frame(name=f"{t:.2f}", data=data))
+        fig.frames = frames
+        steps = [dict(method="animate", label=f.name,
+                      args=[[f.name],
+                            dict(mode="immediate",
+                                 frame=dict(duration=0, redraw=False),
+                                 transition=dict(duration=0))])
+                 for f in frames]
+        fig.update_layout(
+            sliders=[dict(
+                active=0, steps=steps, x=0.0, len=1.0, pad=dict(t=28),
+                currentvalue=dict(prefix="t = ", suffix=" s",
+                                  font=dict(size=13)),
+                font=dict(size=9),
+            )],
+            updatemenus=[dict(
+                type="buttons", direction="left", x=0.0, y=-0.62,
+                xanchor="left", yanchor="top", pad=dict(t=0),
+                buttons=[
+                    dict(label="Play", method="animate",
+                         args=[None, dict(mode="immediate", fromcurrent=True,
+                                          frame=dict(duration=60,
+                                                     redraw=False),
+                                          transition=dict(duration=0))]),
+                    dict(label="Pause", method="animate",
+                         args=[[None], dict(mode="immediate",
+                                            frame=dict(duration=0,
+                                                       redraw=False),
+                                            transition=dict(duration=0))]),
+                ])],
+        )
 
 
 class CEElectropherogramPlot(_CEBase):

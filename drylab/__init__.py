@@ -5,7 +5,7 @@ Simulator by Paul Boswell, Peter Carr, and Dwight Stoll (hplcsimulator.org).
 License: CC BY-NC-SA 3.0 US, inherited from the reference.
 """
 
-__version__ = "0.24.7"
+__version__ = "0.24.8"
 
 from .data import (
     COLUMN_PRESETS,

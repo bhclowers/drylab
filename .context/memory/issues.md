@@ -711,3 +711,28 @@ Proposed fix (one line, not applied — model-touching, needs Brian's GO and a
 version bump): `saved_h = [_c_h0.copy()]` (and seed `c_h = _c_h0` as the warm
 start). Exercise 8 sends students to slice 1 until this ships; drop that note
 from the worksheet once fixed.
+
+## CLOSED 2026-11-10 — CE time-slice slider reset the UI mid-drag (v0.24.8)
+The Time slice marimo slider sat upstream of the CE panel cell, so every tick
+rebuilt the panel, the CE section, and the top-level tabs cell — the same
+rebuild chain behind the parked ?tab= bounce. In deployed WASM the rebuilds
+piled up and the remounted slider snapped back mid-drag. Fix: scrubbing moved
+INSIDE the profile plot (CEProfileAnimationPlot, plotly animation frames +
+in-plot slider/Play, <=80 frames, float32 frame arrays); ce_time_idx deleted;
+panel readouts now describe the end of the run.
+
+## CLOSED 2026-11-10 — CE slice 0 showed the hydronium starting guess (v0.24.8)
+simulate_cze seeded saved_h with the pH-7 GUESS; slice 0 pH/conductivity read
+wrong (7.00 / 0.113 S/m vs true 4.93 / 0.0836 in the default BGE). Fix: march
+and save from the solved _c_h0. Every Exercise 8 key value verified
+bit-identical before/after (only slice 0's reported overlays changed).
+
+## OPEN 2026-11-10 — whole-app output sits near marimo's output_max_bytes
+The top-level tabs cell ships every section's figures in ONE output and
+measured ~8.2 MB with the CE panel rendered — the 8 MB default limit was one
+legend-click away even at v0.24.7 (marimo 0.25.2 showed "Your output is too
+large" once the animated profile added ~0.4 MB). Mitigation in v0.24.8:
+output_max_bytes = 16_000_000 in pyproject [tool.marimo.runtime] AND in the
+notebook/dist script headers (the header is what travels into the WASM
+export). VERIFY on the deployed site after the next deploy; long term,
+consider lazy tabs or per-section outputs to shrink the single cell.

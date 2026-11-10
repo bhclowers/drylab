@@ -1286,3 +1286,12 @@ C 8, D 6). Apparent mobilities read 3-8 % high because both bases tail (slower
 than imidazolium): the key uses this as a Part B tie-in. Word: new
 classroom/tools/build_worksheet_docx.js converts any standard master instead of
 hand-building per exercise as Ex 1 did.
+
+## 2026-11-10 — v0.24.8: in-plot CE time scrubbing [HUMAN reported bug; HUMAN approved fix]
+Brian: dragging Time slice reset the UI and the slider itself. Shipped:
+CEProfileAnimationPlot (frames + in-plot slider/Play; fixed y ranges so axes
+do not breathe; float32 frames), slice-0 hydronium fix, output_max_bytes 16 MB
+(pyproject + script headers), dist artifact regenerated (v0_24_8). Headless
+Playwright test: scratchpad test boots marimo run, runs CE, drags the plotly
+slider, asserts no remount/no cell re-run/no tab bounce. Ex 8 key values
+unchanged; worksheet slice-wording updated same day.

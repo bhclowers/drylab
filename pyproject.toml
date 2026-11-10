@@ -17,6 +17,14 @@ notebook = ["marimo>=0.20", "pandas>=2.0"]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
+[tool.marimo.runtime]
+# The top-level tabs cell ships every section's figures in ONE output, and
+# the app sat ~0.03 MB under marimo's 8 MB default; the CE animated profile
+# (v0.24.8) tipped it over. 16 MB gives the whole app honest headroom.
+# The same setting travels in drylab_nb.py's script header, which is what
+# the WASM export reads (issues.md 2026-11-10).
+output_max_bytes = 16_000_000
+
 [tool.setuptools]
 packages = ["drylab", "drylab.plotting"]
 

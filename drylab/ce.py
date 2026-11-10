@@ -453,6 +453,10 @@ def simulate_cze(species: Sequence[CESpecies],
     _c_h0 = _solve_hydronium(c, L, z, max_forms, c_h)
     _, _, _sigma0, _ = _spatial_properties(c, _c_h0, L, mu, z, D, max_forms)
     j_applied = cond.current_density_for(float(np.median(_sigma0)))
+    # Save (and march from) the SOLVED equilibrium, not the guess: until
+    # v0.24.8 slice 0 stored the pH-7 starting guess, so the pH and
+    # conductivity overlays were wrong at t = 0 only (issues.md 2026-11-09).
+    c_h = _c_h0.copy()
     t = 0.0
     dt = cond.t_final_s / 5000.0
     dt_cap = dt
